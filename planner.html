@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Planner — BrainyBot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/css/main.css" />
+  <link rel="stylesheet" href="src/css/dashboard.css" />
+  <link rel="stylesheet" href="src/css/planner.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="app-body">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><span class="brand-icon">🧠</span><span class="brand-name">BrainyBot</span></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="snav-item"><span class="snav-icon">🏠</span><span>Dashboard</span></a>
+      <a href="editor.html" class="snav-item"><span class="snav-icon">💻</span><span>Code Editor</span></a>
+      <a href="quiz.html" class="snav-item"><span class="snav-icon">🎯</span><span>Quizzes</span></a>
+      <a href="planner.html" class="snav-item active"><span class="snav-icon">📅</span><span>Study Planner</span></a>
+      <a href="instructor.html" class="snav-item"><span class="snav-icon">👨‍🏫</span><span>Instructor View</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sf-profile">
+        <div class="avatar" id="sfAvatar">A</div>
+        <div><div class="sf-name" id="sfName">Learner</div><div class="sf-level" id="sfLevel">🌱 Beginner</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <div><h1 class="topbar-title">📅 Smart Study Planner</h1><p class="topbar-sub">AI schedule with spaced repetition</p></div>
+      </div>
+      <div class="topbar-right">
+        <div class="streak-pill">🔥 <span id="streakCount">3</span></div>
+        <div class="xp-pill">⚡ <span id="xpCount">120</span> XP</div>
+        <button class="btn btn-primary btn-sm" onclick="regeneratePlan()">✨ Regenerate</button>
+      </div>
+    </header>
+
+    <div class="planner-grid">
+
+      <!-- WEEKLY CALENDAR -->
+      <section class="planner-section calendar-section">
+        <div class="section-title-row">
+          <h3>📆 This Week's Plan</h3>
+          <div class="week-nav">
+            <button class="wn-btn" onclick="prevWeek()">‹</button>
+            <span id="weekLabel">Apr 20 – Apr 26, 2026</span>
+            <button class="wn-btn" onclick="nextWeek()">›</button>
+          </div>
+        </div>
+        <div class="week-grid" id="weekGrid"></div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="planner-section settings-section">
+        <h3>⚙️ Planner Settings</h3>
+        <div class="ps-form">
+          <div class="form-group">
+            <label>Daily Study Goal</label>
+            <div class="time-picker">
+              <button class="tp-btn" onclick="adjustTime(-15)">−</button>
+              <span id="studyTimeLabel">45 min/day</span>
+              <button class="tp-btn" onclick="adjustTime(15)">+</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Study Days</label>
+            <div class="day-selector" id="daySelector">
+              <div class="day-btn active" data-day="Mon" onclick="toggleDay(this)">Mon</div>
+              <div class="day-btn active" data-day="Tue" onclick="toggleDay(this)">Tue</div>
+              <div class="day-btn" data-day="Wed" onclick="toggleDay(this)">Wed</div>
+              <div class="day-btn active" data-day="Thu" onclick="toggleDay(this)">Thu</div>
+              <div class="day-btn" data-day="Fri" onclick="toggleDay(this)">Fri</div>
+              <div class="day-btn active" data-day="Sat" onclick="toggleDay(this)">Sat</div>
+              <div class="day-btn" data-day="Sun" onclick="toggleDay(this)">Sun</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Focus Mode</label>
+            <div class="focus-mode-grid">
+              <div class="fm-btn active" onclick="selectFocus('balanced',this)">⚖️ Balanced</div>
+              <div class="fm-btn" onclick="selectFocus('weaknesses',this)">🎯 Weaknesses</div>
+              <div class="fm-btn" onclick="selectFocus('new',this)">🚀 New Topics</div>
+              <div class="fm-btn" onclick="selectFocus('review',this)">🔄 Review</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="regeneratePlan()">✨ Apply & Regenerate</button>
+        </div>
+      </section>
+
+      <!-- SPACED REPETITION -->
+      <section class="planner-section spaced-rep-section">
+        <div class="section-title-row">
+          <h3>🔄 Review Queue</h3>
+          <span class="badge badge-warning">Due Today: 4</span>
+        </div>
+        <div class="sr-list" id="srList"></div>
+      </section>
+
+      <!-- LEARNING PATH -->
+      <section class="planner-section path-section">
+        <div class="section-title-row">
+          <h3>🗺️ Learning Path</h3>
+          <span class="badge badge-accent">Python Track</span>
+        </div>
+        <div class="learning-path" id="learningPath"></div>
+      </section>
+
+      <!-- INSIGHTS -->
+      <section class="planner-section insights-section">
+        <div class="section-title-row"><h3>📊 Study Insights</h3></div>
+        <div class="insights-grid">
+          <div class="insight-card"><div class="ic-icon">⏰</div><div class="ic-val">4.2h</div><div class="ic-label">This Week</div></div>
+          <div class="insight-card"><div class="ic-icon">📚</div><div class="ic-val">8</div><div class="ic-label">Topics</div></div>
+          <div class="insight-card"><div class="ic-icon">🎯</div><div class="ic-val">60%</div><div class="ic-label">Goal Met</div></div>
+          <div class="insight-card"><div class="ic-icon">📈</div><div class="ic-val" id="icStreak">3</div><div class="ic-label">Streak</div></div>
+        </div>
+        <div class="chart-wrap" style="height:160px;margin-top:16px"><canvas id="studyTimeChart"></canvas></div>
+      </section>
+
+      <!-- MILESTONES -->
+      <section class="planner-section achieve-section">
+        <div class="section-title-row"><h3>🏆 Milestones</h3></div>
+        <div class="milestone-list" id="milestoneList"></div>
+      </section>
+
+    </div>
+  </main>
+  <div class="toast-container"></div>
+  <script src="src/js/app.js"></script>
+  <script src="src/js/planner.js"></script>
+</body>
+</html>

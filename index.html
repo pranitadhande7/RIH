@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrainyBot — AI-Powered Programming Tutor</title>
+  <meta name="description" content="BrainyBot is an adaptive AI programming tutor that personalizes lessons, detects emotions, and accelerates your coding journey." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/css/main.css" />
+  <link rel="stylesheet" href="src/css/onboarding.css" />
+</head>
+<body class="landing-body">
+
+  <!-- ── NAV ── -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">
+        <span class="brand-icon">🧠</span>
+        <span class="brand-name">BrainyBot</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="instructor.html">Instructors</a>
+      </div>
+      <div class="nav-actions">
+        <a href="dashboard.html" class="btn btn-ghost">Sign In</a>
+        <a href="#onboarding" class="btn btn-primary" id="getStartedNav">Get Started Free</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        AI-Powered Adaptive Learning
+      </div>
+      <h1 class="hero-title">
+        The <span class="gradient-text">Smartest</span> Way<br/>to Learn Programming
+      </h1>
+      <p class="hero-subtitle">
+        BrainyBot detects when you're stuck, adapts in real-time, and delivers personalized lessons, hints, and challenges — like having a senior dev mentor available 24/7.
+      </p>
+      <div class="hero-cta">
+        <a href="#onboarding" class="btn btn-primary btn-lg" id="heroStart">
+          Start Learning Free
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        <a href="editor.html" class="btn btn-ghost btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Watch Demo
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">50K+</span><span class="stat-label">Learners</span></div>
+        <div class="stat-sep"></div>
+        <div class="stat"><span class="stat-num">98%</span><span class="stat-label">Completion Rate</span></div>
+        <div class="stat-sep"></div>
+        <div class="stat"><span class="stat-num">2x</span><span class="stat-label">Faster Learning</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="editor-preview">
+        <div class="ep-titlebar">
+          <div class="ep-dots"><span></span><span></span><span></span></div>
+          <span class="ep-title">main.py — BrainyBot Editor</span>
+        </div>
+        <div class="ep-code">
+          <div class="code-line"><span class="ln">1</span><span class="kw">def</span> <span class="fn">greet</span>(<span class="param">name</span>):</div>
+          <div class="code-line"><span class="ln">2</span>  <span class="kw">return</span> <span class="str">f"Hello, {name}!"</span></div>
+          <div class="code-line"><span class="ln">3</span></div>
+          <div class="code-line"><span class="ln">4</span><span class="fn">print</span>(greet(<span class="str">"World"</span>))</div>
+          <div class="code-line active-line"><span class="ln">5</span><span class="cursor-blink">|</span></div>
+        </div>
+        <div class="ep-output">
+          <div class="ep-out-label">▶ Output</div>
+          <div class="ep-out-text">Hello, World!</div>
+        </div>
+        <div class="ai-bubble">
+          <div class="ai-avatar">🤖</div>
+          <div class="ai-msg">
+            <strong>BrainyBot:</strong> Great work! Try adding a parameter for a custom greeting. Hint: <code>greet("Alice", "Good morning")</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Why BrainyBot?</span>
+        <h2>Learning that adapts to <span class="gradient-text">you</span></h2>
+        <p>No two learners are alike. BrainyBot understands your unique patterns and adjusts every lesson, hint, and challenge in real-time.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card card-glow">
+          <div class="fc-icon">🎯</div>
+          <h3>Adaptive Difficulty</h3>
+          <p>Lessons get harder or easier based on your performance. Never bored, never overwhelmed.</p>
+        </div>
+        <div class="feature-card card-glow">
+          <div class="fc-icon">🧠</div>
+          <h3>Emotion Detection</h3>
+          <p>Detects frustration, confusion, and boredom through coding patterns. Auto-hints in 90 seconds.</p>
+        </div>
+        <div class="feature-card card-glow">
+          <div class="fc-icon">🤖</div>
+          <h3>AI Mentor Chatbot</h3>
+          <p>Context-aware AI tutor that uses the Socratic method — guiding you to answers, not giving them away.</p>
+        </div>
+        <div class="feature-card card-glow">
+          <div class="fc-icon">💻</div>
+          <h3>In-Browser Sandbox</h3>
+          <p>Write and run Python & JavaScript instantly. No installs. Version history included.</p>
+        </div>
+        <div class="feature-card card-glow">
+          <div class="fc-icon">📊</div>
+          <h3>Progress Analytics</h3>
+          <p>Detailed heatmaps, streak tracking, weakness predictions, and personalized study plans.</p>
+        </div>
+        <div class="feature-card card-glow">
+          <div class="fc-icon">🏆</div>
+          <h3>Gamification</h3>
+          <p>XP points, 25+ badges, daily streaks, and leveling system keep you motivated every day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Process</span>
+        <h2>From Zero to <span class="gradient-text">Hero</span> in 4 Steps</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h3>Diagnostic Assessment</h3>
+            <p>A quick 10-question test calibrates your skill level and learning style in under 5 minutes.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h3>Personalized Path</h3>
+            <p>AI generates your custom curriculum based on your goals, weaknesses, and available time.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h3>Learn & Code</h3>
+            <p>Solve challenges in the sandbox with AI guidance. Instant feedback on every line.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h3>Track & Improve</h3>
+            <p>Spaced repetition ensures you remember what you learn. Dashboard shows your mastery.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ONBOARDING FORM ── -->
+  <section class="onboarding-section" id="onboarding">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Get Started</span>
+        <h2>Create Your <span class="gradient-text">Learning Profile</span></h2>
+        <p>Takes just 2 minutes. No credit card needed.</p>
+      </div>
+
+      <div class="onboarding-card">
+        <!-- Progress bar -->
+        <div class="ob-progress">
+          <div class="ob-progress-bar" id="obProgressBar" style="width:25%"></div>
+        </div>
+        <div class="ob-step-label" id="obStepLabel">Step 1 of 4 — Your Profile</div>
+
+        <!-- STEP 1: Profile -->
+        <div class="ob-step active" id="step1">
+          <h3>Tell us about yourself</h3>
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="userName" class="form-input" placeholder="e.g. Alex Johnson" />
+          </div>
+          <div class="form-group">
+            <label>Your Goal</label>
+            <div class="option-grid" id="goalGrid">
+              <div class="option-btn" data-value="job" onclick="selectOption(this,'goalGrid','userGoal')">
+                <span class="ob-icon">💼</span><span>Get a Job</span>
+              </div>
+              <div class="option-btn" data-value="academic" onclick="selectOption(this,'goalGrid','userGoal')">
+                <span class="ob-icon">🎓</span><span>Academic</span>
+              </div>
+              <div class="option-btn" data-value="hobby" onclick="selectOption(this,'goalGrid','userGoal')">
+                <span class="ob-icon">🎮</span><span>Hobby</span>
+              </div>
+              <div class="option-btn" data-value="career" onclick="selectOption(this,'goalGrid','userGoal')">
+                <span class="ob-icon">🚀</span><span>Career Switch</span>
+              </div>
+            </div>
+            <input type="hidden" id="userGoal" />
+          </div>
+          <button class="btn btn-primary btn-full" onclick="nextStep(2)">Continue →</button>
+        </div>
+
+        <!-- STEP 2: Language & Level -->
+        <div class="ob-step" id="step2">
+          <h3>Choose your language & level</h3>
+          <div class="form-group">
+            <label>Programming Language</label>
+            <div class="option-grid lang-grid" id="langGrid">
+              <div class="option-btn" data-value="python" onclick="selectOption(this,'langGrid','userLang')">
+                <span class="ob-icon">🐍</span><span>Python</span>
+              </div>
+              <div class="option-btn" data-value="javascript" onclick="selectOption(this,'langGrid','userLang')">
+                <span class="ob-icon">⚡</span><span>JavaScript</span>
+              </div>
+              <div class="option-btn" data-value="java" onclick="selectOption(this,'langGrid','userLang')">
+                <span class="ob-icon">☕</span><span>Java</span>
+              </div>
+              <div class="option-btn" data-value="cpp" onclick="selectOption(this,'langGrid','userLang')">
+                <span class="ob-icon">⚙️</span><span>C++</span>
+              </div>
+            </div>
+            <input type="hidden" id="userLang" />
+          </div>
+          <div class="form-group">
+            <label>Current Level</label>
+            <div class="level-grid" id="levelGrid">
+              <div class="option-btn level-btn" data-value="beginner" onclick="selectOption(this,'levelGrid','userLevel')">
+                <strong>Beginner</strong>
+                <small>Just starting out</small>
+              </div>
+              <div class="option-btn level-btn" data-value="intermediate" onclick="selectOption(this,'levelGrid','userLevel')">
+                <strong>Intermediate</strong>
+                <small>Know the basics</small>
+              </div>
+              <div class="option-btn level-btn" data-value="advanced" onclick="selectOption(this,'levelGrid','userLevel')">
+                <strong>Advanced</strong>
+                <small>Comfortable coding</small>
+              </div>
+            </div>
+            <input type="hidden" id="userLevel" />
+          </div>
+          <div class="ob-nav">
+            <button class="btn btn-ghost" onclick="prevStep(1)">← Back</button>
+            <button class="btn btn-primary" onclick="nextStep(3)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Diagnostic Quiz -->
+        <div class="ob-step" id="step3">
+          <h3>Quick Diagnostic (3 questions)</h3>
+          <p class="ob-sub">This helps us calibrate your starting level accurately.</p>
+          <div class="diagnostic-quiz" id="diagQuiz">
+            <!-- Injected by JS -->
+          </div>
+          <div class="ob-nav">
+            <button class="btn btn-ghost" onclick="prevStep(2)">← Back</button>
+            <button class="btn btn-primary" onclick="nextStep(4)" id="diagNext">See Results →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: All set! -->
+        <div class="ob-step" id="step4">
+          <div class="success-screen">
+            <div class="success-icon">🎉</div>
+            <h3>Your Profile is Ready!</h3>
+            <div class="profile-summary" id="profileSummary"></div>
+            <div class="skill-bar-container">
+              <label>Estimated Skill Level</label>
+              <div class="skill-bar"><div class="skill-fill" id="skillFill"></div></div>
+              <span class="skill-pct" id="skillPct">45%</span>
+            </div>
+            <p class="ob-sub">BrainyBot has generated your personalized curriculum. Ready to start?</p>
+            <a href="dashboard.html" class="btn btn-primary btn-lg btn-full" onclick="saveProfile()">
+              🚀 Go to My Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-icon">🧠</span>
+        <span class="brand-name">BrainyBot</span>
+        <p>AI-powered adaptive programming tutor.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fl-group">
+          <strong>Platform</strong>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="editor.html">Code Editor</a>
+          <a href="quiz.html">Quizzes</a>
+        </div>
+        <div class="fl-group">
+          <strong>For Instructors</strong>
+          <a href="instructor.html">Dashboard</a>
+          <a href="#">Analytics</a>
+          <a href="#">Assignments</a>
+        </div>
+        <div class="fl-group">
+          <strong>Privacy</strong>
+          <a href="#">No webcam storage</a>
+          <a href="#">AES-256 encryption</a>
+          <a href="#">Export your data</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 BrainyBot. Built with ❤️ for learners worldwide.</p>
+    </div>
+  </footer>
+
+  <script src="src/js/onboarding.js"></script>
+  <script src="src/js/app.js"></script>
+</body>
+</html>

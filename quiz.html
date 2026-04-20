@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adaptive Quiz — BrainyBot</title>
+  <meta name="description" content="BrainyBot's adaptive quiz engine adjusts difficulty in real-time using IRT model for personalized skill assessment." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/css/main.css" />
+  <link rel="stylesheet" href="src/css/dashboard.css" />
+  <link rel="stylesheet" href="src/css/quiz.css" />
+</head>
+<body class="app-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">🧠</span><span class="brand-name">BrainyBot</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="snav-item"><span class="snav-icon">🏠</span><span>Dashboard</span></a>
+      <a href="editor.html" class="snav-item"><span class="snav-icon">💻</span><span>Code Editor</span></a>
+      <a href="quiz.html" class="snav-item active"><span class="snav-icon">🎯</span><span>Quizzes</span></a>
+      <a href="planner.html" class="snav-item"><span class="snav-icon">📅</span><span>Study Planner</span></a>
+      <a href="instructor.html" class="snav-item"><span class="snav-icon">👨‍🏫</span><span>Instructor View</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sf-profile">
+        <div class="avatar" id="sfAvatar">A</div>
+        <div><div class="sf-name" id="sfName">Learner</div><div class="sf-level" id="sfLevel">🌱 Beginner</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="app-main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <div><h1 class="topbar-title">🎯 Adaptive Quiz</h1><p class="topbar-sub">Questions adapt to your skill level in real-time</p></div>
+      </div>
+      <div class="topbar-right">
+        <div class="streak-pill">🔥 <span id="streakCount">3</span></div>
+        <div class="xp-pill">⚡ <span id="xpCount">120</span> XP</div>
+      </div>
+    </header>
+
+    <div class="quiz-container" id="quizContainer">
+
+      <!-- ── QUIZ SELECTION ── -->
+      <div id="quizSelection" class="quiz-screen active">
+        <div class="qs-header">
+          <h2>Choose a Quiz</h2>
+          <p>Our adaptive engine adjusts difficulty based on your responses using an IRT model.</p>
+        </div>
+
+        <div class="quiz-categories">
+          <div class="qcat-card" onclick="startQuiz('python-basics')">
+            <div class="qcat-icon">🐍</div>
+            <div class="qcat-info">
+              <h3>Python Basics</h3>
+              <p>Variables, loops, functions, and scope</p>
+              <div class="qcat-meta">
+                <span class="badge badge-success">Adaptive</span>
+                <span class="badge badge-accent">~10 questions</span>
+                <span class="badge badge-warning">5-15 min</span>
+              </div>
+            </div>
+            <div class="qcat-score">
+              <div class="qs-pct">78%</div>
+              <div class="qs-label">last score</div>
+            </div>
+          </div>
+
+          <div class="qcat-card" onclick="startQuiz('js-fundamentals')">
+            <div class="qcat-icon">⚡</div>
+            <div class="qcat-info">
+              <h3>JavaScript Fundamentals</h3>
+              <p>Promises, closures, prototypes, and ES6+</p>
+              <div class="qcat-meta">
+                <span class="badge badge-success">Adaptive</span>
+                <span class="badge badge-accent">~10 questions</span>
+                <span class="badge badge-primary">Mixed</span>
+              </div>
+            </div>
+            <div class="qcat-score">
+              <div class="qs-pct">65%</div>
+              <div class="qs-label">last score</div>
+            </div>
+          </div>
+
+          <div class="qcat-card" onclick="startQuiz('data-structures')">
+            <div class="qcat-icon">🏗️</div>
+            <div class="qcat-info">
+              <h3>Data Structures</h3>
+              <p>Arrays, linked lists, trees, and graphs</p>
+              <div class="qcat-meta">
+                <span class="badge badge-success">Adaptive</span>
+                <span class="badge badge-accent">~12 questions</span>
+                <span class="badge badge-danger">Hard</span>
+              </div>
+            </div>
+            <div class="qcat-score">
+              <div class="qs-pct">—</div>
+              <div class="qs-label">not taken</div>
+            </div>
+          </div>
+
+          <div class="qcat-card" onclick="startQuiz('algorithms')">
+            <div class="qcat-icon">⚙️</div>
+            <div class="qcat-info">
+              <h3>Algorithms</h3>
+              <p>Sorting, searching, recursion, complexity</p>
+              <div class="qcat-meta">
+                <span class="badge badge-success">Adaptive</span>
+                <span class="badge badge-accent">~10 questions</span>
+                <span class="badge badge-danger">Hard</span>
+              </div>
+            </div>
+            <div class="qcat-score">
+              <div class="qs-pct">—</div>
+              <div class="qs-label">not taken</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-history-section">
+          <h3>📊 Recent Quiz History</h3>
+          <div class="quiz-history-list" id="quizHistoryList">
+            <!-- filled by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ACTIVE QUIZ ── -->
+      <div id="quizActive" class="quiz-screen">
+        <!-- Header -->
+        <div class="quiz-header">
+          <div class="qh-left">
+            <button class="btn btn-ghost btn-sm" onclick="exitQuiz()">← Exit</button>
+            <span class="qh-title" id="quizTitle">Python Basics</span>
+          </div>
+          <div class="qh-center">
+            <div class="quiz-progress-wrap">
+              <div class="quiz-progress-bar" id="quizProgressBar" style="width:10%"></div>
+            </div>
+            <span class="qh-progress" id="quizProgressText">Q 1 of ~10</span>
+          </div>
+          <div class="qh-right">
+            <div class="quiz-timer" id="quizTimer">⏱ 0:00</div>
+            <div class="diff-badge" id="diffBadge">Medium</div>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="question-area">
+          <div class="question-card" id="questionCard">
+            <div class="qc-meta">
+              <span class="qc-num" id="qcNum">Question 1</span>
+              <span class="qc-topic" id="qcTopic">Functions</span>
+              <span class="qc-type" id="qcType">Multiple Choice</span>
+            </div>
+
+            <div class="qc-question" id="qcQuestion">
+              Loading question...
+            </div>
+
+            <div class="qc-code hidden" id="qcCode">
+              <pre id="qcCodePre"></pre>
+            </div>
+
+            <div class="qc-options" id="qcOptions">
+              <!-- filled by JS -->
+            </div>
+
+            <!-- Code answer input (for code-type questions) -->
+            <div class="qc-code-input hidden" id="qcCodeInput">
+              <label>Write your answer:</label>
+              <textarea class="code-answer-input" id="codeAnswerInput" placeholder="Type your code here..."></textarea>
+            </div>
+
+            <div class="qc-actions">
+              <div class="qca-hint" id="qcaHint">
+                <button class="hint-btn" onclick="showQuizHint()" id="hintBtn">💡 Use Hint (-5 XP)</button>
+                <span class="hint-text hidden" id="hintText"></span>
+              </div>
+              <button class="btn btn-primary" onclick="submitAnswer()" id="submitBtn" disabled>
+                Submit Answer
+              </button>
+            </div>
+          </div>
+
+          <!-- Feedback Card (shown after answer) -->
+          <div class="feedback-card hidden" id="feedbackCard">
+            <div class="fc-result" id="fcResult"></div>
+            <div class="fc-explanation" id="fcExplanation"></div>
+            <div class="fc-skill" id="fcSkill"></div>
+            <button class="btn btn-primary btn-full" onclick="nextQuestion()" id="nextQBtn">
+              Next Question →
+            </button>
+          </div>
+        </div>
+
+        <!-- Skill meter -->
+        <div class="skill-meter-panel">
+          <div class="smp-label">Estimated Skill</div>
+          <div class="smp-bar">
+            <div class="smp-fill" id="smpFill" style="width:45%"></div>
+          </div>
+          <div class="smp-pct" id="smpPct">45%</div>
+          <div class="smp-confidence" id="smpConf">Building confidence...</div>
+        </div>
+      </div>
+
+      <!-- ── QUIZ RESULTS ── -->
+      <div id="quizResults" class="quiz-screen">
+        <div class="results-card">
+          <div class="rc-icon" id="rcIcon">🏆</div>
+          <h2 id="rcTitle">Quiz Complete!</h2>
+          <div class="rc-score-ring">
+            <svg viewBox="0 0 100 100" class="score-ring">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="var(--bg-input)" stroke-width="8"/>
+              <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad)" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" id="scoreCircle"/>
+              <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#6c63ff"/><stop offset="100%" style="stop-color:#a855f7"/>
+              </linearGradient></defs>
+            </svg>
+            <div class="score-center">
+              <span class="score-pct" id="scorePct">0%</span>
+              <span class="score-label">Score</span>
+            </div>
+          </div>
+
+          <div class="rc-stats">
+            <div class="rcs-item"><div class="rcs-val" id="rcsCorrect">0</div><div class="rcs-label">Correct</div></div>
+            <div class="rcs-item"><div class="rcs-val" id="rcsTaken">0</div><div class="rcs-label">Questions</div></div>
+            <div class="rcs-item"><div class="rcs-val" id="rcsXP">0</div><div class="rcs-label">XP Earned</div></div>
+            <div class="rcs-item"><div class="rcs-val" id="rcsTime">0:00</div><div class="rcs-label">Time</div></div>
+          </div>
+
+          <div class="rc-breakdown" id="rcBreakdown"></div>
+
+          <div class="rc-insights" id="rcInsights"></div>
+
+          <div class="rc-actions">
+            <button class="btn btn-primary btn-lg" onclick="retakeQuiz()">🔄 Retake Quiz</button>
+            <a href="dashboard.html" class="btn btn-ghost btn-lg">🏠 Dashboard</a>
+            <a href="editor.html" class="btn btn-ghost btn-lg">💻 Practice Weak Topics</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /quiz-container -->
+  </main>
+
+  <div class="toast-container"></div>
+  <script src="src/js/app.js"></script>
+  <script src="src/js/quiz.js"></script>
+</body>
+</html>

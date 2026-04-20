@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instructor Dashboard — BrainyBot</title>
+  <meta name="description" content="BrainyBot instructor analytics: student progress, at-risk alerts, concept heatmaps, and assignment creation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/css/main.css" />
+  <link rel="stylesheet" href="src/css/dashboard.css" />
+  <link rel="stylesheet" href="src/css/instructor.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="app-body">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><span class="brand-icon">🧠</span><span class="brand-name">BrainyBot</span></div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="snav-item"><span class="snav-icon">🏠</span><span>Student View</span></a>
+      <a href="editor.html" class="snav-item"><span class="snav-icon">💻</span><span>Code Editor</span></a>
+      <a href="quiz.html" class="snav-item"><span class="snav-icon">🎯</span><span>Quizzes</span></a>
+      <a href="planner.html" class="snav-item"><span class="snav-icon">📅</span><span>Study Planner</span></a>
+      <a href="instructor.html" class="snav-item active"><span class="snav-icon">👨‍🏫</span><span>Instructor View</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sf-profile">
+        <div class="avatar" style="background:var(--grad-warm)">P</div>
+        <div><div class="sf-name">Prof. Sharma</div><div class="sf-level">👨‍🏫 Instructor</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <div>
+          <h1 class="topbar-title">👨‍🏫 Instructor Dashboard</h1>
+          <p class="topbar-sub">Python Bootcamp — Batch 2026 · 24 Students</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchView('overview',this)">Overview</button>
+          <button class="tab-btn" onclick="switchView('students',this)">Students</button>
+          <button class="tab-btn" onclick="switchView('assignments',this)">Assignments</button>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="exportReport()">📥 Export Report</button>
+      </div>
+    </header>
+
+    <!-- ── OVERVIEW VIEW ── -->
+    <div class="instructor-view active" id="view-overview">
+      <div class="instructor-grid">
+
+        <!-- Class Stats -->
+        <section class="inst-section stats-row" style="background:none;border:none;padding:0">
+          <div class="stat-card"><div class="sc-label">Total Students</div><div class="sc-value gradient-text">24</div><div class="sc-sub">+3 this week</div></div>
+          <div class="stat-card"><div class="sc-label">Avg Completion</div><div class="sc-value gradient-text">67%</div><div class="sc-sub">↑ 12% vs last week</div></div>
+          <div class="stat-card"><div class="sc-label">At-Risk Students</div><div class="sc-value" style="color:var(--brand-danger)">4</div><div class="sc-sub">Need attention</div></div>
+          <div class="stat-card"><div class="sc-label">Avg Quiz Score</div><div class="sc-value gradient-text">71%</div><div class="sc-sub">Class average</div></div>
+        </section>
+
+        <!-- At-Risk Alerts -->
+        <section class="inst-section alert-section">
+          <div class="section-title-row">
+            <h3>🚨 At-Risk Students</h3>
+            <span class="badge badge-danger">4 alerts</span>
+          </div>
+          <div class="alert-list" id="alertList"></div>
+        </section>
+
+        <!-- Class Progress Chart -->
+        <section class="inst-section chart-section">
+          <div class="section-title-row">
+            <h3>📈 Class Progress (Last 7 Days)</h3>
+          </div>
+          <div class="chart-wrap" style="height:200px"><canvas id="classProgressChart"></canvas></div>
+        </section>
+
+        <!-- Concept Heatmap -->
+        <section class="inst-section heatmap-inst-section">
+          <div class="section-title-row">
+            <h3>🗺️ Class Concept Mastery</h3>
+            <div style="display:flex;gap:8px;font-size:.72rem;color:var(--text-muted);align-items:center">
+              <span style="display:inline-block;width:10px;height:10px;background:rgba(108,99,255,.15);border-radius:2px"></span>Low
+              <span style="display:inline-block;width:10px;height:10px;background:rgba(108,99,255,.5);border-radius:2px"></span>Med
+              <span style="display:inline-block;width:10px;height:10px;background:rgba(108,99,255,.9);border-radius:2px"></span>High
+            </div>
+          </div>
+          <div class="class-heatmap" id="classHeatmap"></div>
+        </section>
+
+        <!-- Top & Bottom Performers -->
+        <section class="inst-section performers-section">
+          <div class="section-title-row"><h3>🏆 Top Performers</h3></div>
+          <div class="performer-list" id="topPerformers"></div>
+        </section>
+
+        <section class="inst-section performers-section">
+          <div class="section-title-row"><h3>📉 Needs Support</h3></div>
+          <div class="performer-list" id="bottomPerformers"></div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="inst-section activity-section">
+          <div class="section-title-row"><h3>⚡ Recent Activity</h3><button class="btn btn-ghost btn-sm">View All</button></div>
+          <div class="activity-feed" id="activityFeed"></div>
+        </section>
+
+        <!-- Distribution Chart -->
+        <section class="inst-section dist-section">
+          <div class="section-title-row"><h3>📊 Score Distribution</h3></div>
+          <div class="chart-wrap" style="height:180px"><canvas id="distChart"></canvas></div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- ── STUDENTS VIEW ── -->
+    <div class="instructor-view" id="view-students">
+      <div class="students-panel">
+        <div class="sp-toolbar">
+          <input type="text" class="form-input" placeholder="🔍 Search students..." id="studentSearch" oninput="filterStudents()" style="max-width:280px" />
+          <select class="form-select" id="studentFilter" onchange="filterStudents()" style="max-width:180px">
+            <option value="all">All Students</option>
+            <option value="atrisk">At Risk</option>
+            <option value="top">Top Performers</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <span class="text-sm text-muted" id="studentCount">24 students</span>
+        </div>
+        <div class="students-table-wrap">
+          <table class="students-table" id="studentsTable">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Level</th>
+                <th>Progress</th>
+                <th>Last Active</th>
+                <th>Quiz Avg</th>
+                <th>Streak</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="studentsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ASSIGNMENTS VIEW ── -->
+    <div class="instructor-view" id="view-assignments">
+      <div class="assign-grid">
+        <section class="inst-section">
+          <div class="section-title-row">
+            <h3>📋 Active Assignments</h3>
+            <button class="btn btn-primary btn-sm" onclick="openCreateAssign()">+ New Assignment</button>
+          </div>
+          <div class="assign-list" id="assignList"></div>
+        </section>
+
+        <section class="inst-section create-assign-section" id="createAssignForm" style="display:none">
+          <h3>➕ Create Assignment</h3>
+          <div class="form-group"><label>Title</label><input type="text" class="form-input" id="aTitle" placeholder="e.g. Recursion Practice" /></div>
+          <div class="form-group"><label>Description</label><textarea class="form-textarea" id="aDesc" placeholder="Describe the assignment..."></textarea></div>
+          <div class="form-group">
+            <label>Type</label>
+            <div class="option-grid" style="grid-template-columns:repeat(3,1fr)">
+              <div class="option-btn selected" id="aTypeCode" onclick="selectAType('code',this)"><span>💻</span><span>Coding</span></div>
+              <div class="option-btn" id="aTypeQuiz" onclick="selectAType('quiz',this)"><span>🎯</span><span>Quiz</span></div>
+              <div class="option-btn" id="aTypeReading" onclick="selectAType('reading',this)"><span>📖</span><span>Reading</span></div>
+            </div>
+          </div>
+          <div class="form-group"><label>Due Date</label><input type="date" class="form-input" id="aDue" /></div>
+          <div class="form-group"><label>Assign To</label>
+            <select class="form-select" id="aAssignTo">
+              <option>All Students</option>
+              <option>At-Risk Students Only</option>
+              <option>Advanced Group</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-primary btn-full" onclick="createAssignment()">Create Assignment</button>
+            <button class="btn btn-ghost" onclick="closeCreateAssign()">Cancel</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Student Detail Modal -->
+  <div class="modal-overlay" id="studentModal">
+    <div class="modal" style="max-width:560px;position:relative">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="studentModalContent"></div>
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+  <script src="src/js/app.js"></script>
+  <script src="src/js/instructor.js"></script>
+</body>
+</html>
